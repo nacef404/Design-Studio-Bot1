@@ -1,14 +1,10 @@
 const {
 SlashCommandBuilder,
-EmbedBuilder,
-ActionRowBuilder,
-ButtonBuilder,
-ButtonStyle
-}=require("discord.js");
+EmbedBuilder
+} = require("discord.js");
 
 
-module.exports={
-
+module.exports = {
 
 name:"setup",
 
@@ -17,64 +13,64 @@ data:new SlashCommandBuilder()
 
 .setName("setup")
 
-.setDescription("Setup Design Studio Panel"),
+.setDescription("Create custom setup embed")
 
+.addStringOption(option =>
+option
+.setName("title")
+.setDescription("Embed title")
+.setRequired(true)
+)
+
+.addStringOption(option =>
+option
+.setName("description")
+.setDescription("Embed description")
+.setRequired(true)
+),
 
 
 async execute(interaction){
 
 
-const embed=new EmbedBuilder()
-
-.setColor("Purple")
-
-.setTitle("?? Design Studio")
-
-.setDescription(
-
-`
-Welcome to our Design Studio
+const title =
+interaction.options.getString("title");
 
 
-?? Logo Design
-?? Banner Design
-?? Social Media Design
-?? Discord Design
-
-
-Click below to create your order.
-`
-
-);
+const description =
+interaction.options.getString("description");
 
 
 
-const row=new ActionRowBuilder()
+const embed = new EmbedBuilder()
 
-.addComponents(
+.setTitle(title)
 
-new ButtonBuilder()
+.setDescription(description)
 
-.setCustomId("create_order")
+.setColor("Blue")
 
-.setLabel("?? Create Order")
-
-.setStyle(ButtonStyle.Primary)
-
-);
+.setTimestamp();
 
 
 
-await interaction.reply({
+await interaction.channel.send({
 
-embeds:[embed],
+embeds:[embed]
 
-components:[row]
+});
+
+
+
+interaction.reply({
+
+content:"✅ Setup message created",
+
+ephemeral:true
 
 });
 
 
 }
 
-
-}
+};
