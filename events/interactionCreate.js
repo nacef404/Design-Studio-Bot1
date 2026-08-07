@@ -100,7 +100,7 @@ const embed = new EmbedBuilder()
 
 .setColor("Blue")
 
-.setTitle(`?? Order #${order.id}`)
+.setTitle(`🛒 Order #${order.id}`)
 
 .setDescription(
 `
@@ -113,7 +113,7 @@ ${order.service}
 
 
 Status:
-?? Pending
+🟡 Pending
 `
 );
 
@@ -127,7 +127,7 @@ new ButtonBuilder()
 
 .setCustomId("complete_order")
 
-.setLabel("? Complete")
+.setLabel("✅ Complete")
 
 .setStyle(ButtonStyle.Success),
 
@@ -136,7 +136,7 @@ new ButtonBuilder()
 
 .setCustomId("cancel_order")
 
-.setLabel("? Cancel")
+.setLabel("❌ Cancel")
 
 .setStyle(ButtonStyle.Danger)
 
@@ -156,7 +156,7 @@ components:[buttons]
 
 interaction.reply({
 
-content:`? Order Created: ${channel}`,
+content:`✅ Order Created: ${channel}`,
 
 ephemeral:true
 
@@ -175,7 +175,7 @@ if(interaction.customId === "complete_order"){
 
 interaction.reply({
 
-content:"?? Order Completed",
+content:"🟢 Order Completed",
 
 ephemeral:true
 
@@ -193,7 +193,7 @@ if(interaction.customId === "cancel_order"){
 
 interaction.reply({
 
-content:"?? Order Cancelled",
+content:"🔴 Order Cancelled",
 
 ephemeral:true
 
