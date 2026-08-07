@@ -1,0 +1,14 @@
+{
+  "prefix": "!",
+  "guildID": "SERVER_ID",
+  "channels": {
+    "orders": "ORDERS_CHANNEL_ID",
+    "logs": "LOGS_CHANNEL_ID",
+    "payments": "PAYMENTS_CHANNEL_ID"
+  },
+  "roles": {
+    "ceo": "CEO_ROLE_ID",
+    "manager": "MANAGER_ROLE_ID",
+    "designer": "DESIGNER_ROLE_ID"
+  }
+}
