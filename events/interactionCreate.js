@@ -14,196 +14,182 @@ const ordersFile = "./data/orders.json";
 
 module.exports = {
 
-name: "interactionCreate",
+    name: "interactionCreate",
 
-async execute(interaction, client) {
-
-
-if (!interaction.isButton()) return;
+    async execute(interaction, client) {
 
 
-
-// Create Order
-
-if (interaction.customId === "create_order") {
-
-
-let orders = JSON.parse(
-fs.readFileSync(ordersFile)
-);
+        if (!interaction.isButton()) return;
 
 
 
-let order = {
-
-id: Date.now(),
-
-client: interaction.user.id,
-
-service: "Not Selected",
-
-designer: "Not Assigned",
-
-status: "Pending"
-
-};
+        if (interaction.customId === "create_order") {
 
 
-
-orders.push(order);
-
-
-
-fs.writeFileSync(
-ordersFile,
-JSON.stringify(orders,null,2)
-);
+            let orders = JSON.parse(
+                fs.readFileSync(ordersFile)
+            );
 
 
+            let order = {
 
-const channel = await interaction.guild.channels.create({
+                id: Date.now(),
 
-name:`order-${interaction.user.username}`,
+                client: interaction.user.id,
 
-type:ChannelType.GuildText,
+                service: "Not Selected",
 
+                designer: "Not Assigned",
 
-permissionOverwrites:[
+                status: "Pending"
 
-{
-id: interaction.guild.id,
-
-deny:[
-PermissionFlagsBits.ViewChannel
-]
-
-},
+            };
 
 
-{
-id: interaction.user.id,
-
-allow:[
-PermissionFlagsBits.ViewChannel,
-PermissionFlagsBits.SendMessages
-]
-
-}
-
-]
-
-});
+            orders.push(order);
 
 
 
-const embed = new EmbedBuilder()
+            fs.writeFileSync(
+                ordersFile,
+                JSON.stringify(orders, null, 2)
+            );
 
-.setColor("Blue")
 
-.setTitle(`🛒 Order #${order.id}`)
 
-.setDescription(
+            const channel = await interaction.guild.channels.create({
+
+                name: `order-${interaction.user.username}`,
+
+                type: ChannelType.GuildText,
+
+
+                permissionOverwrites: [
+
+                    {
+                        id: interaction.guild.id,
+
+                        deny: [
+                            PermissionFlagsBits.ViewChannel
+                        ]
+                    },
+
+
+                    {
+                        id: interaction.user.id,
+
+                        allow: [
+                            PermissionFlagsBits.ViewChannel,
+                            PermissionFlagsBits.SendMessages
+                        ]
+                    }
+
+                ]
+
+            });
+
+
+
+            const embed = new EmbedBuilder()
+
+                .setColor("Blue")
+
+                .setTitle(`🛒 Order #${order.id}`)
+
+                .setDescription(
 `
 Client:
 ${interaction.user}
 
-
 Service:
 ${order.service}
-
 
 Status:
 🟡 Pending
 `
-);
+                );
 
 
 
-const buttons = new ActionRowBuilder()
+            const buttons = new ActionRowBuilder()
 
-.addComponents(
+                .addComponents(
 
-new ButtonBuilder()
+                    new ButtonBuilder()
 
-.setCustomId("complete_order")
+                        .setCustomId("complete_order")
 
-.setLabel("✅ Complete")
+                        .setLabel("✅ Complete")
 
-.setStyle(ButtonStyle.Success),
-
-
-new ButtonBuilder()
-
-.setCustomId("cancel_order")
-
-.setLabel("❌ Cancel")
-
-.setStyle(ButtonStyle.Danger)
-
-);
+                        .setStyle(ButtonStyle.Success),
 
 
+                    new ButtonBuilder()
 
-channel.send({
+                        .setCustomId("cancel_order")
 
-embeds:[embed],
+                        .setLabel("❌ Cancel")
 
-components:[buttons]
+                        .setStyle(ButtonStyle.Danger)
 
-});
+                );
 
 
 
-interaction.reply({
+            await channel.send({
 
-content:`✅ Order Created: ${channel}`,
+                embeds: [embed],
 
-ephemeral:true
+                components: [buttons]
 
-});
-
-
-}
+            });
 
 
 
+            await interaction.reply({
 
-// Complete Order
+                content: `✅ Order Created: ${channel}`,
 
-if(interaction.customId === "complete_order"){
+                ephemeral: true
 
-
-interaction.reply({
-
-content:"🟢 Order Completed",
-
-ephemeral:true
-
-});
+            });
 
 
-}
+        }
 
 
 
-// Cancel Order
-
-if(interaction.customId === "cancel_order"){
+        if (interaction.customId === "complete_order") {
 
 
-interaction.reply({
+            await interaction.reply({
 
-content:"🔴 Order Cancelled",
+                content: "🟢 Order Completed",
 
-ephemeral:true
+                ephemeral: true
 
-});
+            });
 
 
-}
+        }
 
 
 
-}
+        if (interaction.customId === "cancel_order") {
+
+
+            await interaction.reply({
+
+                content: "🔴 Order Cancelled",
+
+                ephemeral: true
+
+            });
+
+
+        }
+
+
+    }
 
 };
